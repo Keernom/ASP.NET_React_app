@@ -18,7 +18,7 @@ namespace ASP.NET_React_app.Services
 
         public async Task<UserModel> CreateAsync(UserModel user)
         {
-            var newUser = new UserModel()
+            var newUser = new User()
             {
                 Name = user.Name,
                 Email = user.Email,
@@ -27,11 +27,8 @@ namespace ASP.NET_React_app.Services
                 Photo = user.Photo,
             };
 
-            using (_dbContext)
-            {
-                _dbContext.Add(newUser);
-                await _dbContext.SaveChangesAsync();
-            }
+            _dbContext.Add(newUser);
+            await _dbContext.SaveChangesAsync();
 
             user.Id = newUser.Id;
 
@@ -46,30 +43,21 @@ namespace ASP.NET_React_app.Services
             userToUpdate.Description = user.Description;
             userToUpdate.Photo = user.Photo;
 
-            using (_dbContext)
-            {
-                _dbContext.Update(userToUpdate);
-                await _dbContext.SaveChangesAsync();
-            }
+            _dbContext.Users.Update(userToUpdate);
+            await _dbContext.SaveChangesAsync();
 
             return user;
         }
 
         public async Task<User?> GetUserByLogin(string email)
         {
-            using (_dbContext)
-            {
-                return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-            }
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task DeleteAsync(User user)
         {
-            using (_dbContext)
-            {
-                _dbContext.Remove(user);
-                _dbContext.SaveChangesAsync();
-            }
+            _dbContext.Remove(user);
+            _dbContext.SaveChangesAsync();
         }
 
         public (string login, string password) GetUserLoginPassFromBasicAuth(HttpRequest request)
@@ -99,7 +87,8 @@ namespace ASP.NET_React_app.Services
 
             var claims = new List<Claim>() 
             { 
-                new Claim(ClaimsIdentity.DefaultNameClaimType, currentUser.Email)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, currentUser.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, "User")
             };
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(
