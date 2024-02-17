@@ -2,6 +2,7 @@
 using ASP.NET_React_app.Data.Entities;
 using ASP.NET_React_app.Models;
 using ASP.NET_React_app.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -51,6 +52,7 @@ namespace ASP.NET_React_app.Controllers
         }
 
         [HttpPatch]
+        [Authorize]
         public async Task<ActionResult<UserModel>> UpdateAccount(UserModel userModel)
         {
             var currentUserEmail = HttpContext.User.Identity.Name;
@@ -67,6 +69,7 @@ namespace ASP.NET_React_app.Controllers
         }
 
         [HttpDelete]
+        [Authorize]
         public async Task<ActionResult> DeleteAccount(int userId)
         {
             var currentUserEmail = HttpContext.User.Identity.Name;
@@ -76,7 +79,7 @@ namespace ASP.NET_React_app.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("token")]
         public async Task<ActionResult<AuthToken>> GetToken()
         {
             (string login, string password) userData = _userService.GetUserLoginPassFromBasicAuth(Request);
