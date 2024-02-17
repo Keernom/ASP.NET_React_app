@@ -18,9 +18,9 @@ namespace ASP.NET_React_app.Controllers
     {
         private UserService _userService;
 
-        public AccountController(AppDbContext dbContext)
+        public AccountController(UserService userService)
         {
-            _userService = new UserService(dbContext);
+            _userService = userService;
         }
 
         [HttpGet]
