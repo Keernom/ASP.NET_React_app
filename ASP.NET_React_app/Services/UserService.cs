@@ -37,8 +37,8 @@ namespace ASP.NET_React_app.Services
 
         public async Task<UserModel> UpdateAsync(User userToUpdate, UserModel user)
         {
-            userToUpdate.Name = user.Email;
-            userToUpdate.Email = user.Password;
+            userToUpdate.Name = user.Name;
+            userToUpdate.Email = user.Email;
             userToUpdate.Password = user.Password;
             userToUpdate.Description = user.Description;
             userToUpdate.Photo = user.Photo;
