@@ -7,7 +7,7 @@ namespace ASP.NET_React_app.Models
     {
         public const string ISSUER = "MyAuthServer";
         public const string AUDIENCE = "MyAuthClient";
-        const string KEY = "my_super_secret_key_123";
+        const string KEY = "j4hR6QddW/7a2fK6XZ55bHapSRlrMnklu+nn0m4isJA=";
         public const int LIFETIME = 10;
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {
