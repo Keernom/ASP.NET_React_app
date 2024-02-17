@@ -1,5 +1,7 @@
+using ASP.NET_React_app.Data;
 using ASP.NET_React_app.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +26,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true
         };
     });
+
+string conn = builder.Configuration.GetConnectionString("TestDb");
+builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(conn));
 
 var app = builder.Build();
 
