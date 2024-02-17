@@ -1,5 +1,6 @@
 using ASP.NET_React_app.Data;
 using ASP.NET_React_app.Models;
+using ASP.NET_React_app.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -29,6 +30,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 string conn = builder.Configuration.GetConnectionString("TestDb");
 builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(conn));
+
+builder.Services.AddTransient<UserService>();
 
 var app = builder.Build();
 
