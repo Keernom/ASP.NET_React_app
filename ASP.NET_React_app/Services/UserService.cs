@@ -1,4 +1,7 @@
 ﻿using ASP.NET_React_app.Data;
+using ASP.NET_React_app.Data.Entities;
+using ASP.NET_React_app.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text;
 
@@ -6,6 +9,69 @@ namespace ASP.NET_React_app.Services
 {
     public class UserService
     {
+        private AppDbContext _dbContext;
+
+        public UserService(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task<UserModel> CreateAsync(UserModel user)
+        {
+            var newUser = new UserModel()
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Password = user.Password,
+                Description = user.Description,
+                Photo = user.Photo,
+            };
+
+            using (_dbContext)
+            {
+                _dbContext.Add(newUser);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            user.Id = newUser.Id;
+
+            return user;
+        }
+
+        public async Task<UserModel> UpdateAsync(User userToUpdate, UserModel user)
+        {
+            userToUpdate.Name = user.Email;
+            userToUpdate.Email = user.Password;
+            userToUpdate.Password = user.Password;
+            userToUpdate.Description = user.Description;
+            userToUpdate.Photo = user.Photo;
+
+            using (_dbContext)
+            {
+                _dbContext.Update(userToUpdate);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return user;
+        }
+
+        public async Task<User?> GetUserByLogin(string email)
+        {
+            using (_dbContext)
+            {
+                return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+            }
+        }
+
+        public async Task DeleteAsync(User user)
+        {
+            using (_dbContext)
+            {
+                _dbContext.Remove(user);
+                _dbContext.SaveChangesAsync();
+            }
+        }
+
         public (string login, string password) GetUserLoginPassFromBasicAuth(HttpRequest request)
         {
             string userName = "";
@@ -25,9 +91,9 @@ namespace ASP.NET_React_app.Services
             return (userName, userPass);
         }
 
-        public (ClaimsIdentity identity, int id)? GetIdentity(string email, string password)
+        public async Task<(ClaimsIdentity identity, int id)?> GetIdentity(string email, string password)
         {
-            User? currentUser = GetUserByLogin(email);
+            User? currentUser = await GetUserByLogin(email);
 
             if (currentUser == null || !VerifyHashedPassword(currentUser.Password, password)) return null; 
 
@@ -43,11 +109,6 @@ namespace ASP.NET_React_app.Services
                 ClaimsIdentity.DefaultRoleClaimType);
 
             return (claimsIdentity, currentUser.Id);
-        }
-
-        private User? GetUserByLogin(string email)
-        {
-            throw new NotImplementedException();
         }
 
         private bool VerifyHashedPassword(string password1, string password2)
