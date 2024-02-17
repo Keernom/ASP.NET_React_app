@@ -1,8 +1,11 @@
-﻿using ASP.NET_React_app.Models;
+﻿using ASP.NET_React_app.Data;
+using ASP.NET_React_app.Data.Entities;
+using ASP.NET_React_app.Models;
 using ASP.NET_React_app.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -14,41 +17,71 @@ namespace ASP.NET_React_app.Controllers
     {
         private UserService _userService;
 
-        public AccountController(UserService userService)
+        public AccountController(AppDbContext dbContext)
         {
-            _userService = userService;
+            _userService = new UserService(dbContext);
         }
 
         [HttpGet]
-        public IActionResult GetAccount() 
-        { 
-            throw new NotImplementedException();
+        public async Task<ActionResult<UserModel>> GetAccount() 
+        {
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+
+            if (currentUser == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(new UserModel() 
+            { 
+                Id = currentUser.Id,
+                Name = currentUser.Name,
+                Email = currentUser.Email,
+                Description = currentUser.Description,
+                Photo = currentUser.Photo
+            });
         }
 
         [HttpPost]
-        public ActionResult<UserModel> CreateAccount(UserModel user) 
+        public async Task<ActionResult<UserModel>> CreateAccount(UserModel userModel) 
         { 
-            return Ok(user);
+            var newUser = await _userService.CreateAsync(userModel);
+            return Ok(newUser);
         }
 
         [HttpPatch]
-        public ActionResult<UserModel> UpdateAccount(UserModel user)
+        public async Task<ActionResult<UserModel>> UpdateAccount(UserModel userModel)
         {
-            return Ok(user);
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+
+            if (currentUser == null || currentUser?.Id != userModel.Id) 
+            {
+                return BadRequest();
+            }
+
+            await _userService.UpdateAsync(currentUser, userModel);
+
+            return Ok(userModel);
         }
 
         [HttpDelete]
-        public IActionResult DeleteAccount(int userId)
+        public async Task<ActionResult> DeleteAccount(int userId)
         {
-            throw new NotImplementedException();
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+            await _userService.DeleteAsync(currentUser);
+
+            return Ok();
         }
 
         [HttpPost]
-        public ActionResult<AuthToken> GetToken()
+        public async Task<ActionResult<AuthToken>> GetToken()
         {
             (string login, string password) userData = _userService.GetUserLoginPassFromBasicAuth(Request);
 
-            (ClaimsIdentity claims, int id)? identity = _userService.GetIdentity(userData.login, userData.password);
+            (ClaimsIdentity claims, int id)? identity = await _userService.GetIdentity(userData.login, userData.password);
 
             if (identity == null) return NotFound("Login or password is not correct");
 
