@@ -10,10 +10,13 @@ namespace ASP.NET_React_app.Services
     public class UserService
     {
         private AppDbContext _dbContext;
+        private NoSQLDataService _noSQLDataService;
 
-        public UserService(AppDbContext dbContext)
+        public UserService(AppDbContext dbContext, NoSQLDataService noSQLDataService)
         {
             _dbContext = dbContext;
+            _noSQLDataService = noSQLDataService;
+
         }
 
         public async Task<UserModel> CreateAsync(UserModel user)
@@ -60,17 +63,9 @@ namespace ASP.NET_React_app.Services
             _dbContext.SaveChangesAsync();
         }
 
-        public async Task Subscribe(int from, int to)
+        public void Subscribe(int from, int to)
         {
-            var sub = new UserSub()
-            {
-                From = from,
-                To = to,
-                Date = DateTime.UtcNow,
-            };
-
-            _dbContext.UserSubs.Add(sub);
-            await _dbContext.SaveChangesAsync();
+            _noSQLDataService.SetUserSubs(from, to);
         }
 
         public (string login, string password) GetUserLoginPassFromBasicAuth(HttpRequest request)

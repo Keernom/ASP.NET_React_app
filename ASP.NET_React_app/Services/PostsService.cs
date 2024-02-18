@@ -8,10 +8,12 @@ namespace ASP.NET_React_app.Services
     public class PostsService
     {
         private AppDbContext _dbContext;
+        private NoSQLDataService _noSQLDataService;
 
-        public PostsService(AppDbContext dbContext)
+        public PostsService(AppDbContext dbContext, NoSQLDataService noSQLDataService)
         {
             _dbContext = dbContext;
+            _noSQLDataService = noSQLDataService;
         }
 
         public List<PostModel> GetByAuthor(int userId)
@@ -77,13 +79,13 @@ namespace ASP.NET_React_app.Services
 
         public List<PostModel> GetPostsForCurrentUser(int userId)
         {
-            var subs = _dbContext.UserSubs.Where(s => s.From == userId).ToList();
+            var subs = _noSQLDataService.GetUserSubs(userId);
 
             var allPosts = new List<PostModel>();
 
-            foreach (var sub in subs)
+            foreach (var id in subs.UsersId)
             {
-                var allPostsByAuthor = _dbContext.Posts.Where(p => p.AuthorId == sub.To);
+                var allPostsByAuthor = _dbContext.Posts.Where(p => p.AuthorId == id);
                 allPosts.AddRange(allPostsByAuthor.Select(ToModel));
             }
 
@@ -92,25 +94,18 @@ namespace ASP.NET_React_app.Services
             return allPosts;
         }
 
+        public void SetLike(int userId, int postId)
+        {
+            _noSQLDataService.SetPostLike(userId, postId);
+        }
+
         private PostModel ToModel(Post post)
         {
-            var likes = _dbContext.Likes.Where(l => l.PostId == post.Id).Count();
+            var likes = _noSQLDataService.GetPostLike(post.Id).UsersId.Count();
 
             PostModel postModel = new PostModel(post.Id, post.Text, post.Image, post.PostDate);
             postModel.LikesCount = likes;
             return postModel;
-        }
-
-        public async Task SetLike(int userId, int postId)
-        {
-            var like = new Like()
-            {
-                From = userId, 
-                PostId = postId
-            };
-
-            _dbContext.Likes.Add(like);
-            await _dbContext.SaveChangesAsync();    
         }
     }
 
