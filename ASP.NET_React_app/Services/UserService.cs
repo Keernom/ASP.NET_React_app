@@ -60,6 +60,19 @@ namespace ASP.NET_React_app.Services
             _dbContext.SaveChangesAsync();
         }
 
+        public async Task Subscribe(int from, int to)
+        {
+            var sub = new UserSub()
+            {
+                From = from,
+                To = to,
+                Date = DateTime.UtcNow,
+            };
+
+            _dbContext.UserSubs.Add(sub);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public (string login, string password) GetUserLoginPassFromBasicAuth(HttpRequest request)
         {
             string userName = "";
