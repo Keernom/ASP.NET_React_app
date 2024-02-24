@@ -5,7 +5,7 @@ namespace ASP.NET_React_app.Services
 {
     public class NoSQLDataService
     {
-        private readonly string DBPath = "";
+        private readonly string DBPath = "MyData.db";
         private const string SubsCollection = "SubsCollection";
         private const string PostLikeCollection = "PostLikeCollection";
 

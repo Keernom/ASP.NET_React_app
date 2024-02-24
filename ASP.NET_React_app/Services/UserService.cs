@@ -57,6 +57,27 @@ namespace ASP.NET_React_app.Services
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<UserProfile?> GetUserProfileById(int id)
+        {
+            User? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return ToProfile(user);
+        }
+
+        public List<UserShort> GetUsersByName(string name)
+        {
+            string lowerName = name.ToLower();
+            return _dbContext.Users
+                .Where(x => x.Name.ToLower().StartsWith(lowerName))
+                .Select(ToShortModel)
+                .ToList();
+        }
+
         public async Task DeleteAsync(User user)
         {
             _dbContext.Remove(user);
@@ -111,6 +132,44 @@ namespace ASP.NET_React_app.Services
         private bool VerifyHashedPassword(string password1, string password2)
         {
             return password1 == password2;
+        }
+
+        private UserModel ToModel(User user)
+        {
+            return new UserModel()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Description = user.Description,
+                Photo = user.Photo,
+            };
+        }
+
+        private UserProfile ToProfile(User user)
+        {
+            var userSubs = _noSQLDataService.GetUserSubs(user.Id);
+            return new UserProfile()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Description = user.Description,
+                Photo = user.Photo,
+                SubsCount = userSubs?.UsersId.Count ?? 0,
+            };
+        }
+
+        private UserShort ToShortModel(User user)
+        {
+            var userSubs = _noSQLDataService.GetUserSubs(user.Id);
+            return new UserShort()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Description = new string(user.Description.Take(50).ToArray()),
+                Photo = user.Photo
+            };
         }
     }
 }

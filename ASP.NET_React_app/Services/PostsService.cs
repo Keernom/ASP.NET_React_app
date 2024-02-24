@@ -18,7 +18,8 @@ namespace ASP.NET_React_app.Services
 
         public List<PostModel> GetByAuthor(int userId)
         {
-            var posts = _dbContext.Posts.Where(p => p.AuthorId == userId)
+            var posts = _dbContext.Posts.Where(p => p.UserId == userId)
+                .OrderBy(p => p.PostDate)
                 .Reverse()
                 .Select(ToModel)
                 .ToList();
@@ -29,7 +30,7 @@ namespace ASP.NET_React_app.Services
         {
             Post post = new Post()
             {
-                AuthorId = userId,
+                UserId = userId,
                 Text = postModel.Text,
                 Image = postModel.Image,
                 PostDate = DateTime.UtcNow,
@@ -47,7 +48,7 @@ namespace ASP.NET_React_app.Services
         public async Task<PostModel> UpdateAsync(PostModel postModel, int userId)
         {
             Post postToUpdate = _dbContext.Posts
-                .FirstOrDefault(p => p.Id == postModel.Id && p.AuthorId == userId);
+                .FirstOrDefault(p => p.Id == postModel.Id && p.UserId == userId);
 
             if (postToUpdate == null)
             {
@@ -60,13 +61,15 @@ namespace ASP.NET_React_app.Services
             _dbContext.Posts.Update(postToUpdate);
             await _dbContext.SaveChangesAsync();
 
+            postModel = ToModel(postToUpdate);
+
             return postModel;
         }
 
         public async Task DeleteAsync(int postId, int userId)
         {
             Post postToDelete = _dbContext.Posts
-                .FirstOrDefault(p => p.Id == postId && p.AuthorId == userId);
+                .FirstOrDefault(p => p.Id == postId && p.UserId == userId);
 
             if (postToDelete == null)
             {
@@ -83,9 +86,11 @@ namespace ASP.NET_React_app.Services
 
             var allPosts = new List<PostModel>();
 
+            if (subs == null) return allPosts;
+
             foreach (var id in subs.UsersId)
             {
-                var allPostsByAuthor = _dbContext.Posts.Where(p => p.AuthorId == id);
+                var allPostsByAuthor = _dbContext.Posts.Where(p => p.UserId == id);
                 allPosts.AddRange(allPostsByAuthor.Select(ToModel));
             }
 
@@ -94,17 +99,17 @@ namespace ASP.NET_React_app.Services
             return allPosts;
         }
 
-        public void SetLike(int userId, int postId)
+        public void SetLike(int postId, int userId)
         {
             _noSQLDataService.SetPostLike(userId, postId);
         }
 
         private PostModel ToModel(Post post)
         {
-            var likes = _noSQLDataService.GetPostLike(post.Id).UsersId.Count();
+            var likes = _noSQLDataService.GetPostLike(post.Id);
 
             PostModel postModel = new PostModel(post.Id, post.Text, post.Image, post.PostDate);
-            postModel.LikesCount = likes;
+            postModel.LikesCount = likes == null ? 0 : likes.UsersId.Count;
             return postModel;
         }
     }
