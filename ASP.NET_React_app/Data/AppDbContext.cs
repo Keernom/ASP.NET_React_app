@@ -10,6 +10,7 @@ namespace ASP.NET_React_app.Data
 
         public AppDbContext(DbContextOptions<AppDbContext> contextOptions) : base(contextOptions)
         {
+            // Database.EnsureDeleted();
             Database.EnsureCreated(); 
         }
     }
