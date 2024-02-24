@@ -32,6 +32,8 @@ string conn = builder.Configuration.GetConnectionString("TestDb");
 builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(conn));
 
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<NoSQLDataService>();
+builder.Services.AddTransient<PostsService>();
 
 var app = builder.Build();
 
