@@ -2,7 +2,13 @@
 {
     public class UserSubs
     {
-        public int UserId { get; set; }
-        public List<int> UsersId { get; set; }
+        public int Id { get; set; }
+        public List<UserSub> Users { get; set; }
+    }
+
+    public class UserSub
+    {
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
     }
 }
