@@ -15,7 +15,7 @@ namespace ASP.NET_React_app.Services
             {
                 var subs = db.GetCollection<UserSubs>(SubsCollection);
 
-                var subsForUser = subs.FindOne(x => x.UserId == userId);
+                var subsForUser = subs.FindOne(x => x.Id == userId);
                 return subsForUser;
             }
         }
@@ -26,12 +26,14 @@ namespace ASP.NET_React_app.Services
             {
                 var subs = db.GetCollection<UserSubs>(SubsCollection);
 
-                var subsForUser = subs.FindOne(x => x.UserId == from);
+                var subsForUser = subs.FindOne(x => x.Id == from);
+                var sub = new UserSub { Id = to, Date = DateTime.UtcNow };
+
                 if (subsForUser != null)
                 {
-                    if (!subsForUser.UsersId.Contains(to))
+                    if (!subsForUser.Users.Select(x => x.Id).Contains(to))
                     {
-                        subsForUser.UsersId.Add(to);
+                        subsForUser.Users.Add(sub);
                         subs.Update(subsForUser);
                     }
                 }
@@ -39,12 +41,12 @@ namespace ASP.NET_React_app.Services
                 {
                     var newSubsForUser = new UserSubs() 
                     { 
-                        UserId = from, 
-                        UsersId = new List<int>() { to } 
+                        Id = from, 
+                        Users = new List<UserSub>() { sub } 
                     };
 
                     subs.Insert(newSubsForUser);
-                    subs.EnsureIndex(x => x.UserId);
+                    subs.EnsureIndex(x => x.Id);
 
                     subsForUser = newSubsForUser;
                 }
