@@ -102,5 +102,21 @@ namespace ASP.NET_React_app.Controllers
 
             return Ok();
         }
+
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreatePosts([FromBody] List<PostModel> postModels)
+        {
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var postM = await _postService.CreateFromListAsync(postModels, currentUser.Id);
+            return Ok(postM);
+        }
     }
 }

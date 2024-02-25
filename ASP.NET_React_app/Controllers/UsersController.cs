@@ -1,4 +1,5 @@
 ﻿using ASP.NET_React_app.Data.Entities;
+using ASP.NET_React_app.Models;
 using ASP.NET_React_app.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,24 @@ namespace ASP.NET_React_app.Controllers
         public async Task<IActionResult> Get(int userId)
         {
             return Ok(await _userService.GetUserProfileById(userId));
+        }
+
+        // Эндпоинт для массового создания пользователей
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateUsers([FromBody] List<UserModel> users)
+        {
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            if (currentUser.Id != 1) return BadRequest();
+
+            var newUsers = await _userService.CreateFromListAsync(users);
+            return Ok(newUsers);
         }
     }
 }
