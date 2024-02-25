@@ -45,6 +45,26 @@ namespace ASP.NET_React_app.Services
             return postModel;
         }
 
+        public async Task<List<PostModel>> CreateFromListAsync(List<PostModel> postModels, int userId)
+        {
+            foreach(var postModel in postModels)
+            {
+                Post post = new Post()
+                {
+                    UserId = userId,
+                    Text = postModel.Text,
+                    Image = postModel.Image,
+                    PostDate = DateTime.UtcNow,
+                };
+
+                _dbContext.Posts.Add(post);
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return postModels;
+        }
+
         public async Task<PostModel> UpdateAsync(PostModel postModel, int userId)
         {
             Post postToUpdate = _dbContext.Posts
@@ -88,9 +108,9 @@ namespace ASP.NET_React_app.Services
 
             if (subs == null) return allPosts;
 
-            foreach (var id in subs.UsersId)
+            foreach (var sub in subs.Users)
             {
-                var allPostsByAuthor = _dbContext.Posts.Where(p => p.UserId == id);
+                var allPostsByAuthor = _dbContext.Posts.Where(p => p.UserId == sub.Id);
                 allPosts.AddRange(allPostsByAuthor.Select(ToModel));
             }
 

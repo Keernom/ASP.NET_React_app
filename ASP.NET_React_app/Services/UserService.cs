@@ -38,6 +38,27 @@ namespace ASP.NET_React_app.Services
             return user;
         }
 
+        public async Task<List<UserModel>> CreateFromListAsync(List<UserModel> users)
+        {
+            foreach(var user in users)
+            {
+                var newUser = new User()
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    Password = user.Password,
+                    Description = user.Description,
+                    Photo = user.Photo,
+                };
+
+                _dbContext.Add(newUser);
+            }
+            
+            await _dbContext.SaveChangesAsync();
+
+            return users;
+        }
+
         public async Task<UserModel> UpdateAsync(User userToUpdate, UserModel user)
         {
             userToUpdate.Name = user.Name;
@@ -156,7 +177,7 @@ namespace ASP.NET_React_app.Services
                 Email = user.Email,
                 Description = user.Description,
                 Photo = user.Photo,
-                SubsCount = userSubs?.UsersId.Count ?? 0,
+                SubsCount = userSubs?.Users.Count ?? 0,
             };
         }
 
