@@ -118,10 +118,11 @@ namespace ASP.NET_React_app.Services
 
             if (authHeader != null && authHeader.StartsWith("Basic"))
             {
-                string encodedUsernamePass = authHeader.Replace("Basic", "");
+                string encodedUsernamePass = authHeader.Replace("Basic ", "");
                 var encoding = Encoding.GetEncoding("iso-8859-1");
 
-                string[] namePassArray = encoding.GetString(Convert.FromBase64String(encodedUsernamePass)).Split(':');
+                byte[] bytes = Convert.FromBase64String(encodedUsernamePass);
+                string[] namePassArray = encoding.GetString(bytes).Split(':');
                 userName = namePassArray[0];
                 userPass = namePassArray[1];
             }
