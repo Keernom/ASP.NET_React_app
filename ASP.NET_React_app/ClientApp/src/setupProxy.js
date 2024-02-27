@@ -6,10 +6,13 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 
 const context = [
   "/weatherforecast",
+  "/api/account",
+  "/api/users",
+  "/api/posts",
 ];
 
 const onError = (err, req, resp, target) => {
-    console.error(`${err.message}`);
+  console.error(`${err.message}`);
 }
 
 module.exports = function (app) {
