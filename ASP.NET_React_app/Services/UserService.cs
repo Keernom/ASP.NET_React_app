@@ -168,7 +168,7 @@ namespace ASP.NET_React_app.Services
             };
         }
 
-        private UserProfile ToProfile(User user)
+        public UserProfile ToProfile(User user)
         {
             var userSubs = _noSQLDataService.GetUserSubs(user.Id);
             return new UserProfile()

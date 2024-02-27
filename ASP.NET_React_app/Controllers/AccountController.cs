@@ -34,14 +34,9 @@ namespace ASP.NET_React_app.Controllers
                 return BadRequest();
             }
 
-            return Ok(new UserModel() 
-            { 
-                Id = currentUser.Id,
-                Name = currentUser.Name,
-                Email = currentUser.Email,
-                Description = currentUser.Description,
-                Photo = currentUser.Photo
-            });
+            var profile = _userService.ToProfile(currentUser);
+
+            return Ok(profile);
         }
 
         [HttpPost]
