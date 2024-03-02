@@ -5,3 +5,8 @@ export async function getUser() {
     var user = await sendRequestWithToken(ACCOUNT_URL, 'GET');
     return user;
 }
+
+export async function updateUserAsync(user) {
+    var user = await sendRequestWithToken(ACCOUNT_URL, 'PATCH', user);
+    return user;
+}
