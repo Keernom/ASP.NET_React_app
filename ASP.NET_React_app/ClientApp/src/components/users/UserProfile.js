@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { getUser } from "../../services/usersService";
+import { getUser, updateUserAsync } from "../../services/usersService";
 import ImageComponent from "../ImageComponent";
+import ModalButton from "../ModalButton";
+import UserProfileCreation from "./UserProfileCreation";
 
 const UserProfile = () => {
     const [user, setUser] = useState({
         name: '',
+        password: '',
         email: '',
         description: '',
         photo: ''
@@ -18,6 +21,11 @@ const UserProfile = () => {
         fetchUser();
     }, []);
 
+    const updateUser = (newUser) => {
+        setUser(newUser);
+        updateUserAsync(newUser);
+    }
+
     return (
         <div>
             <h2>User Profile</h2>
@@ -25,6 +33,7 @@ const UserProfile = () => {
             <p>Email: {user.email}</p>
             <p>Description: {user.description}</p>
             <ImageComponent byteArray={user.photo} />
+            <ModalButton modalContent={<UserProfileCreation user={user} setAction={updateUser} />} title={"Редактирование профиля"}></ModalButton>
         </div>
     );
 };
