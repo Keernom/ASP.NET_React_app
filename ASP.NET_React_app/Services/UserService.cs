@@ -27,7 +27,7 @@ namespace ASP.NET_React_app.Services
                 Email = user.Email,
                 Password = user.Password,
                 Description = user.Description,
-                Photo = user.Photo,
+                Photo = user.GetPhoto(),
             };
 
             _dbContext.Add(newUser);
@@ -48,7 +48,7 @@ namespace ASP.NET_React_app.Services
                     Email = user.Email,
                     Password = user.Password,
                     Description = user.Description,
-                    Photo = user.Photo,
+                    Photo = user.GetPhoto(),
                 };
 
                 _dbContext.Add(newUser);
@@ -65,7 +65,7 @@ namespace ASP.NET_React_app.Services
             userToUpdate.Email = user.Email;
             userToUpdate.Password = user.Password;
             userToUpdate.Description = user.Description;
-            userToUpdate.Photo = user.Photo;
+            userToUpdate.Photo = user.GetPhoto();
 
             _dbContext.Users.Update(userToUpdate);
             await _dbContext.SaveChangesAsync();
@@ -154,18 +154,6 @@ namespace ASP.NET_React_app.Services
         private bool VerifyHashedPassword(string password1, string password2)
         {
             return password1 == password2;
-        }
-
-        private UserModel ToModel(User user)
-        {
-            return new UserModel()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Description = user.Description,
-                Photo = user.Photo,
-            };
         }
 
         public UserProfile ToProfile(User user)
