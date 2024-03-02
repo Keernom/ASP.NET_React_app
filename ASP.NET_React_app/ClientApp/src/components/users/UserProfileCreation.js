@@ -8,6 +8,7 @@ const UserProfileCreation = ({ user, setAction }) => {
     const [email, setEmail] = useState(user.email);
     const [userDescription, setDescription] = useState(user.description);
     const [userPhoto, setPhoto] = useState(user.photo);
+    const [userPhotoStr, setPhotoSrt] = useState('');
 
 
     const endCreate = () => {
@@ -20,9 +21,10 @@ const UserProfileCreation = ({ user, setAction }) => {
             description: userDescription,
             photo: userPhoto
         }
-        console.log(newUser);
         setAction(newUser);
     };
+
+    const image = userPhotoStr ? <img src={userPhotoStr} alt="Image" /> : <ImageComponent base64String={user.photo} />
 
     return (
         <div style={{ display: "flex", flexDirection: "column", }}>
@@ -36,8 +38,8 @@ const UserProfileCreation = ({ user, setAction }) => {
             <p>Description</p>
             <textarea onChange={e => setDescription(e.target.value)} value={userDescription} />
             <p>Photo</p>
-            <ImageUploader byteImageAction={(bytes) => setPhoto(bytes)}></ImageUploader>
-            <ImageComponent byteArray={user.photo} />
+            {image}
+            <ImageUploader byteImageAction={(str, bytes) => { setPhoto(bytes); setPhotoSrt(str); }}></ImageUploader>
 
             <button onClick={endCreate}>Ok</button>
         </div>
