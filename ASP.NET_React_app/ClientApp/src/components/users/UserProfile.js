@@ -32,7 +32,7 @@ const UserProfile = () => {
             <p>Name: {user.name}</p>
             <p>Email: {user.email}</p>
             <p>Description: {user.description}</p>
-            <ImageComponent byteArray={user.photo} />
+            <ImageComponent base64String={user.photo} />
             <ModalButton modalContent={<UserProfileCreation user={user} setAction={updateUser} />} title={"Редактирование профиля"}></ModalButton>
         </div>
     );
