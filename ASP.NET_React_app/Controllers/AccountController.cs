@@ -24,7 +24,7 @@ namespace ASP.NET_React_app.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<UserModel>> GetAccount() 
+        public async Task<ActionResult<UserProfile>> GetAccount() 
         {
             var currentUserEmail = HttpContext.User.Identity.Name;
             User currentUser = await _userService.GetUserByLogin(currentUserEmail);
@@ -53,7 +53,7 @@ namespace ASP.NET_React_app.Controllers
             var currentUserEmail = HttpContext.User.Identity.Name;
             User currentUser = await _userService.GetUserByLogin(currentUserEmail);
 
-            if (currentUser == null || currentUser?.Id != userModel.Id) 
+            if (currentUser == null && currentUser?.Id != userModel.Id) 
             {
                 return BadRequest();
             }
