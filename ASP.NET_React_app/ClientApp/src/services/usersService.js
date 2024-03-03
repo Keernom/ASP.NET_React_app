@@ -1,4 +1,4 @@
-import { ACCOUNT_URL, LOGIN_URL, PROFILE_URL, USERS_URL, sendRequestWithToken } from "./commonService";
+import { ACCOUNT_URL, LOGIN_URL, PROFILE_URL, USERS_URL, clearStorage, sendRequestWithToken } from "./commonService";
 
 
 export async function getUser() {
@@ -28,7 +28,12 @@ export async function createUserAsync(user) {
 export function exitFromPorfile() {
     const userAnswer = window.confirm('Are you sure?');
     if (userAnswer) {
-        localStorage.clear();
+        clearStorage();
         window.location.href = LOGIN_URL;
     }
+}
+
+export async function getUsersByName(username) {
+    const users = await sendRequestWithToken(`${USERS_URL}/all/${username}`, 'GET');
+    return users;
 }
