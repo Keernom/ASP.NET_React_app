@@ -35,7 +35,7 @@ export const Post = ({ id, text, imageStr, date, updateAction }) => {
                 <p>{text}</p>
             </div>
         </div>
-    );
+    )
 }
 
 export const PostsByUser = ({ userId }) => {

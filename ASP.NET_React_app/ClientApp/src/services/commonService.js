@@ -9,6 +9,7 @@ const ISONLINE_NAME = 'ONLINE';
 export const PROFILE_URL = '/profile';
 export const LOGIN_URL = '/login';
 export const SIGNUP_URL = '/signup';
+export const SEARCH_URL = '/all';
 
 export async function getToken(login, password) {
     const url = ACCOUNT_URL + '/token';
