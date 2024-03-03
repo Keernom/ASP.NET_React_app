@@ -7,6 +7,7 @@ const TOKEN_NAME = 'Token';
 
 export const PROFILE_URL = '/profile';
 export const LOGIN_URL = '/login';
+export const SIGNUP_URL = '/signup';
 
 export async function getToken(login, password) {
     const url = ACCOUNT_URL + '/token';
@@ -40,11 +41,13 @@ async function sendAuthentitacedRequest(url, method, username, password, data) {
     }
 }
 
-export async function sendRequestWithToken(url, method, data) {
+export async function sendRequestWithToken(url, method, data, withToken = true) {
     var headers = new Headers();
-    const token = localStorage.getItem(TOKEN_NAME);
 
-    headers.set('Authorization', `Bearer ${token}`);
+    if (withToken) {
+        const token = localStorage.getItem(TOKEN_NAME);
+        headers.set('Authorization', `Bearer ${token}`);
+    }
 
     if (data) {
         headers.set('Content-Type', 'application/json');
