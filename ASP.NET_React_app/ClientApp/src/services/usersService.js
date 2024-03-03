@@ -1,4 +1,4 @@
-import { ACCOUNT_URL, PROFILE_URL, sendRequestWithToken } from "./commonService";
+import { ACCOUNT_URL, LOGIN_URL, PROFILE_URL, sendRequestWithToken } from "./commonService";
 
 
 export async function getUser() {
@@ -11,4 +11,19 @@ export async function updateUserAsync(user) {
     var user = await sendRequestWithToken(ACCOUNT_URL, 'PATCH', user);
     window.location.href = PROFILE_URL;
     return user;
+}
+
+export async function createUserAsync(user) {
+    user.photo = user.photo.toString();
+    var user = await sendRequestWithToken(ACCOUNT_URL, 'POST', user, false);
+    window.location.href = LOGIN_URL;
+    return user;
+}
+
+export function exitFromPorfile() {
+    const userAnswer = window.confirm('Are you sure?');
+    if (userAnswer) {
+        localStorage.clear();
+        window.location.href = LOGIN_URL;
+    }
 }
