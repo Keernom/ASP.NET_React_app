@@ -2,6 +2,7 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import Login from "./components/users/Login";
+import SearchUser from "./components/users/SearchUser";
 import SignUp from "./components/users/SignUp";
 import UserProfile from "./components/users/UserProfile";
 import UserPublicView from "./components/users/UserPublicView";
@@ -35,6 +36,10 @@ const AppRoutes = [
   {
     path: '/all/:userId',
     element: <UserPublicView />
+  },
+  {
+    path: '/all',
+    element: <SearchUser />
   }
 ];
 
