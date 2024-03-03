@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUser, updateUserAsync } from "../../services/usersService";
+import { exitFromPorfile, getUser, updateUserAsync } from "../../services/usersService";
 import ImageComponent from "../ImageComponent";
 import ModalButton from "../ModalButton";
 import UserProfileCreation from "./UserProfileCreation";
@@ -34,6 +34,7 @@ const UserProfile = () => {
             <p>Description: {user.description}</p>
             <ImageComponent base64String={user.photo} />
             <ModalButton modalContent={<UserProfileCreation user={user} setAction={updateUser} />} title={"Редактирование профиля"}></ModalButton>
+            <button type="button" className="btn btn-secondary" onClick={exitFromPorfile}> Exit </button>
         </div>
     );
 };
