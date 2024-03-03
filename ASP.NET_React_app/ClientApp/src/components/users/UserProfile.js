@@ -3,9 +3,11 @@ import { exitFromPorfile, getUser, updateUserAsync } from "../../services/usersS
 import ImageComponent from "../ImageComponent";
 import ModalButton from "../ModalButton";
 import UserProfileCreation from "./UserProfileCreation";
+import { PostsByUser } from "../posts/Post";
 
 const UserProfile = () => {
     const [user, setUser] = useState({
+        id: 0,
         name: '',
         password: '',
         email: '',
@@ -50,6 +52,9 @@ const UserProfile = () => {
 
                 </div>
 
+            </div>
+            <div>
+                <PostsByUser userId={user.id} />
             </div>
         </div >
     );
