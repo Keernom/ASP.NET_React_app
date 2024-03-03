@@ -28,6 +28,15 @@ code {
   border-radius: 10px;
 }
 
+.post-item .img-box {
+  width: 50%;
+}
+
+.post-item .post-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .user-short {
   display: flex;
   margin: 5%;
