@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Text { get; set; }
-        public byte[]? Image { get; set; }
+        public string? Image { get; set; }
         
         public int? LikesCount { get; set; }
         public DateTime? PostDate { get; set; }
@@ -12,14 +12,6 @@
         public PostModel()
         {
             
-        }
-
-        public PostModel(int id, string text, byte[] image, DateTime date)
-        {
-            Id = id;
-            Text = text;
-            Image = image;
-            PostDate = date;
         }
     }
 }

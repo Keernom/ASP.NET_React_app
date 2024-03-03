@@ -27,7 +27,7 @@ namespace ASP.NET_React_app.Services
                 Email = user.Email,
                 Password = user.Password,
                 Description = user.Description,
-                Photo = user.GetPhoto(),
+                Photo = ImageService.GetPhoto(user.Photo),
             };
 
             _dbContext.Add(newUser);
@@ -48,7 +48,7 @@ namespace ASP.NET_React_app.Services
                     Email = user.Email,
                     Password = user.Password,
                     Description = user.Description,
-                    Photo = user.GetPhoto(),
+                    Photo = ImageService.GetPhoto(user.Photo),
                 };
 
                 _dbContext.Add(newUser);
@@ -65,7 +65,7 @@ namespace ASP.NET_React_app.Services
             userToUpdate.Email = user.Email;
             userToUpdate.Password = user.Password;
             userToUpdate.Description = user.Description;
-            userToUpdate.Photo = user.GetPhoto();
+            userToUpdate.Photo = ImageService.GetPhoto(user.Photo);
 
             _dbContext.Users.Update(userToUpdate);
             await _dbContext.SaveChangesAsync();

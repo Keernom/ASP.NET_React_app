@@ -21,9 +21,9 @@ namespace ASP.NET_React_app.Controllers
         }
 
         [HttpGet("{userId}")]
-        public ActionResult<List<PostModel>> GetByAuthor(int userId)
+        public ActionResult<List<PostView>> GetByAuthor(int userId)
         {
-            List<PostModel> posts = _postService.GetByAuthor(userId);
+            List<PostView> posts = _postService.GetByAuthor(userId);
             return Ok(posts);
         }
 

@@ -16,12 +16,12 @@ namespace ASP.NET_React_app.Services
             _noSQLDataService = noSQLDataService;
         }
 
-        public List<PostModel> GetByAuthor(int userId)
+        public List<PostView> GetByAuthor(int userId)
         {
             var posts = _dbContext.Posts.Where(p => p.UserId == userId)
                 .OrderBy(p => p.PostDate)
                 .Reverse()
-                .Select(ToModel)
+                .Select(ToView)
                 .ToList();
             return posts;
         }
@@ -32,7 +32,7 @@ namespace ASP.NET_React_app.Services
             {
                 UserId = userId,
                 Text = postModel.Text,
-                Image = postModel.Image,
+                Image = ImageService.GetPhoto(postModel.Image),
                 PostDate = DateTime.UtcNow,
             };
 
@@ -53,7 +53,7 @@ namespace ASP.NET_React_app.Services
                 {
                     UserId = userId,
                     Text = postModel.Text,
-                    Image = postModel.Image,
+                    Image = ImageService.GetPhoto(postModel.Image),
                     PostDate = DateTime.UtcNow,
                 };
 
@@ -65,7 +65,7 @@ namespace ASP.NET_React_app.Services
             return postModels;
         }
 
-        public async Task<PostModel> UpdateAsync(PostModel postModel, int userId)
+        public async Task<PostView> UpdateAsync(PostModel postModel, int userId)
         {
             Post postToUpdate = _dbContext.Posts
                 .FirstOrDefault(p => p.Id == postModel.Id && p.UserId == userId);
@@ -76,14 +76,20 @@ namespace ASP.NET_React_app.Services
             }
 
             postToUpdate.Text = postModel.Text;
-            postToUpdate.Image = postModel.Image;
+
+            var photo = ImageService.GetPhoto(postModel.Image);
+
+            if (!(postToUpdate.Image?.Length > 10 && photo.Length < 10))
+            {
+                postToUpdate.Image = photo;
+            }
 
             _dbContext.Posts.Update(postToUpdate);
             await _dbContext.SaveChangesAsync();
 
-            postModel = ToModel(postToUpdate);
+            var postView = ToView(postToUpdate);
 
-            return postModel;
+            return postView;
         }
 
         public async Task DeleteAsync(int postId, int userId)
@@ -100,18 +106,18 @@ namespace ASP.NET_React_app.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public List<PostModel> GetPostsForCurrentUser(int userId)
+        public List<PostView> GetPostsForCurrentUser(int userId)
         {
             var subs = _noSQLDataService.GetUserSubs(userId);
 
-            var allPosts = new List<PostModel>();
+            var allPosts = new List<PostView>();
 
             if (subs == null) return allPosts;
 
             foreach (var sub in subs.Users)
             {
                 var allPostsByAuthor = _dbContext.Posts.Where(p => p.UserId == sub.Id);
-                allPosts.AddRange(allPostsByAuthor.Select(ToModel));
+                allPosts.AddRange(allPostsByAuthor.Select(ToView));
             }
 
             allPosts.Sort(new PostComparer());
@@ -124,19 +130,19 @@ namespace ASP.NET_React_app.Services
             _noSQLDataService.SetPostLike(userId, postId);
         }
 
-        private PostModel ToModel(Post post)
+        private PostView ToView(Post post)
         {
             var likes = _noSQLDataService.GetPostLike(post.Id);
 
-            PostModel postModel = new PostModel(post.Id, post.Text, post.Image, post.PostDate);
+            PostView postModel = new PostView(post.Id, post.Text, post.Image, post.PostDate);
             postModel.LikesCount = likes == null ? 0 : likes.UsersId.Count;
             return postModel;
         }
     }
 
-    class PostComparer : IComparer<PostModel>
+    class PostComparer : IComparer<PostView>
     {
-        public int Compare(PostModel? x, PostModel? y)
+        public int Compare(PostView? x, PostView? y)
         {
             if (x.PostDate > y.PostDate) return -1;
             if (x.PostDate < y.PostDate) return 1;
