@@ -4,6 +4,7 @@ import { Home } from "./components/Home";
 import Login from "./components/users/Login";
 import SignUp from "./components/users/SignUp";
 import UserProfile from "./components/users/UserProfile";
+import UserPublicView from "./components/users/UserPublicView";
 import { LOGIN_URL, PROFILE_URL, SIGNUP_URL } from "./services/commonService";
 
 const AppRoutes = [
@@ -30,6 +31,10 @@ const AppRoutes = [
   {
     path: SIGNUP_URL,
     element: <SignUp />
+  },
+  {
+    path: '/all/:userId',
+    element: <UserPublicView />
   }
 ];
 
