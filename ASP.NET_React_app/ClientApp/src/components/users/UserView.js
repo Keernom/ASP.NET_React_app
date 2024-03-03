@@ -4,12 +4,17 @@ import { createPost } from "../../services/postsService";
 import { PROFILE_URL } from "../../services/commonService";
 import ModalButton from "../ModalButton";
 import PostCreation from "../posts/PostCreation";
+import { subcribeToUser } from "../../services/usersService";
 
 const UserView = ({ user, isProfile }) => {
 
     const addNewPost = async (post) => {
         await createPost(post);
         window.location.href = PROFILE_URL;
+    }
+
+    const subscribe = () => {
+        subcribeToUser(user.id);
     }
 
     return (
@@ -36,7 +41,11 @@ const UserView = ({ user, isProfile }) => {
                             title={"New Post"}
                             btnName={"Add Post"} />
                         <PostProfileView userId={user.id} />
-                    </div> : <PostsByUser userId={user.id} />}
+                    </div> :
+                    <div>
+                        <button type="button" className="btn btn-info" onClick={subscribe}> Subscribe </button>
+                        <PostsByUser userId={user.id} />
+                    </div>}
             </div>
         </div >
     )
