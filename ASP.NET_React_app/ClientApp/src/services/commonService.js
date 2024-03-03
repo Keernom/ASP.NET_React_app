@@ -4,6 +4,7 @@ export const POSTS_URL = 'api/posts';
 
 const BASE_URL = 'login';
 const TOKEN_NAME = 'Token';
+const ISONLINE_NAME = 'ONLINE';
 
 export const PROFILE_URL = '/profile';
 export const LOGIN_URL = '/login';
@@ -14,6 +15,7 @@ export async function getToken(login, password) {
     const token = await sendAuthentitacedRequest(url, 'POST', login, password);
 
     localStorage.setItem(TOKEN_NAME, token.accessToken);
+    localStorage.setItem(ISONLINE_NAME, '1');
     window.location.href = PROFILE_URL;
 }
 
@@ -72,5 +74,14 @@ export async function sendRequestWithToken(url, method, data, withToken = true) 
 function errorRequest(status) {
     if (status === 401) {
         window.location.href = BASE_URL;
+        clearStorage();
     }
+}
+
+export function clearStorage() {
+    localStorage.clear();
+}
+
+export function isUserOnline() {
+    return localStorage.getItem(ISONLINE_NAME) == '1'
 }
