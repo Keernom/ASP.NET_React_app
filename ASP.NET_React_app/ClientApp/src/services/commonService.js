@@ -10,6 +10,7 @@ export const PROFILE_URL = '/profile';
 export const LOGIN_URL = '/login';
 export const SIGNUP_URL = '/signup';
 export const SEARCH_URL = '/all';
+export const ALLPOSTS_URL = '/allPosts';
 
 export async function getToken(login, password) {
     const url = ACCOUNT_URL + '/token';

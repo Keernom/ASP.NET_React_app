@@ -7,6 +7,11 @@ export async function getPostsByUserId(userId) {
     return allPosts;
 }
 
+export async function getPosts() {
+    const allPosts = await sendRequestWithToken(`${POSTS_URL}`, 'GET')
+    return allPosts;
+}
+
 export async function createPost(post) {
     post.image = post.image.toString();
     const res = await sendRequestWithToken(POSTS_URL, 'POST', post)

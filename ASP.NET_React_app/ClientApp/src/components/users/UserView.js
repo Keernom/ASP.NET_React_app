@@ -1,11 +1,11 @@
 import ImageComponent from "../ImageComponent";
-import { PostsByUser } from "../posts/Post";
+import { PostProfileView, PostsByUser, PostsForUser } from "../posts/Post";
 import { createPost } from "../../services/postsService";
 import { PROFILE_URL } from "../../services/commonService";
 import ModalButton from "../ModalButton";
 import PostCreation from "../posts/PostCreation";
 
-const UserView = ({ user }) => {
+const UserView = ({ user, isProfile }) => {
 
     const addNewPost = async (post) => {
         await createPost(post);
@@ -29,11 +29,13 @@ const UserView = ({ user }) => {
             </div>
 
             <div>
-                <ModalButton
-                    modalContent={<PostCreation id={0} oldText={''} oldImage={''} setAction={addNewPost} />}
-                    title={"New Post"}
-                    btnName={"Add Post"} />
-                <PostsByUser userId={user.id} />
+                {isProfile ?
+                    <div>
+                        <ModalButton
+                            modalContent={<PostCreation id={0} oldText={''} oldImage={''} setAction={addNewPost} />}
+                            title={"New Post"}
+                            btnName={"Add Post"} />
+                        <PostProfileView userId={user.id} /> </div> : <PostsByUser userId={user.id} />}
             </div>
         </div >
     )
