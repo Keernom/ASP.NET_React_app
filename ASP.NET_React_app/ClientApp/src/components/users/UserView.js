@@ -35,7 +35,8 @@ const UserView = ({ user, isProfile }) => {
                             modalContent={<PostCreation id={0} oldText={''} oldImage={''} setAction={addNewPost} />}
                             title={"New Post"}
                             btnName={"Add Post"} />
-                        <PostProfileView userId={user.id} /> </div> : <PostsByUser userId={user.id} />}
+                        <PostProfileView userId={user.id} />
+                    </div> : <PostsByUser userId={user.id} />}
             </div>
         </div >
     )
