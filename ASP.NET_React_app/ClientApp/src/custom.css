@@ -27,3 +27,19 @@ code {
   padding: 10px;
   border-radius: 10px;
 }
+
+.user-short {
+  display: flex;
+  margin: 5%;
+  cursor: pointer;
+}
+
+.user-short-img {
+  width: 20%;
+}
+
+.user-short-data {
+  display: flex;
+  justify-content: center;
+  margin-left: 5%;
+}
