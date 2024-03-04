@@ -107,6 +107,13 @@ namespace ASP.NET_React_app.Services
 
         public void Subscribe(int from, int to)
         {
+            var userSubs = _noSQLDataService.GetUserSubs(from);
+
+            if (userSubs.Users.Select(u => u.Id).Contains(to))
+            {
+                return; 
+            }
+
             _noSQLDataService.SetUserSubs(from, to);
         }
 

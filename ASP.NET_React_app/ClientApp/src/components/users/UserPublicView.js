@@ -16,10 +16,6 @@ const UserPublicView = () => {
     const params = useParams();
     const userId = params.userId;
 
-    const subscribeClick = () => {
-        subcribeToUser(userId)
-    }
-
     useEffect(() => {
         const fetchUser = async () => {
             const data = await getPublicUser(userId);
