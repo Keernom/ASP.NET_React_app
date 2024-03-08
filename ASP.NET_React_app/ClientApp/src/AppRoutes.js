@@ -1,6 +1,6 @@
 import { Home } from "./components/Home";
 import { PostsForUser } from "./components/posts/Post";
-import Login from "./components/users/Login";
+import Login from "./components/users/Login/Login";
 import SearchUser from "./components/users/SearchUser";
 import SignUp from "./components/users/SignUp";
 import UserProfile from "./components/users/UserProfile";
