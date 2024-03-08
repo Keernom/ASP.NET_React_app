@@ -1,0 +1,14 @@
+.navLink {
+    color: var(--text);
+    margin-left: 1vw;
+    border-radius: 5px;
+}
+
+.navLink:hover {
+    background-color: var(--text);
+    color: var(--background);
+}
+
+.navLink:focus {
+    color: var(--text);
+}
