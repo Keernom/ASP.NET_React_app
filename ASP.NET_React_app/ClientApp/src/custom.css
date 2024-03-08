@@ -1,24 +1,22 @@
 /* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+:root {
+  --text: #dfe4f0;
+  --background: #040508;
+  --primary: #a3b1d3;
+  --secondary: #194cdb;
+  --accent: #694BD2;
+
+  --linearPrimarySecondary: linear-gradient(#a3b1d3, #194cdb);
+  --linearPrimaryAccent: linear-gradient(#a3b1d3, #694BD2);
+  --linearSecondaryAccent: linear-gradient(#194cdb, #694BD2);
+  --radialPrimarySecondary: radial-gradient(#a3b1d3, #194cdb);
+  --radialPrimaryAccent: radial-gradient(#a3b1d3, #694BD2);
+  --radialSecondaryAccent: radial-gradient(#194cdb, #694BD2);
 }
 
-.btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-code {
-  color: #E01A76;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+body {
+  background-color: var(--background);
+  color: var(--text)
 }
 
 .post-item {
