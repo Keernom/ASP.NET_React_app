@@ -1,6 +1,7 @@
 ﻿using ASP.NET_React_app.Data;
 using ASP.NET_React_app.Data.Entities;
 using ASP.NET_React_app.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
 namespace ASP.NET_React_app.Services
@@ -106,7 +107,7 @@ namespace ASP.NET_React_app.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public List<PostView> GetPostsForCurrentUser(int userId)
+        public async Task<List<PostView>> GetPostsForCurrentUser(int userId)
         {
             var subs = _noSQLDataService.GetUserSubs(userId);
 
@@ -122,6 +123,12 @@ namespace ASP.NET_React_app.Services
 
             allPosts.Sort(new PostComparer());
 
+            foreach(var post in allPosts)
+            {
+                User author = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == post.UserId);
+                post.AuthorName = author.Name;
+            }
+
             return allPosts;
         }
 
@@ -135,6 +142,7 @@ namespace ASP.NET_React_app.Services
             var likes = _noSQLDataService.GetPostLike(post.Id);
 
             PostView postModel = new PostView(post.Id, post.Text, post.Image, post.PostDate);
+            postModel.UserId = post.UserId;
             postModel.LikesCount = likes == null ? 0 : likes.UsersId.Count;
             return postModel;
         }

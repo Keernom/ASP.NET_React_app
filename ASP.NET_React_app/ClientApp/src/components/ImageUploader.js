@@ -1,7 +1,7 @@
 import React from "react";
+import Form from 'react-bootstrap/Form';
 
 const ImageUploader = ({ byteImageAction }) => {
-
     const handlerFileChange = (event) => {
 
         const file = event.target.files[0];
@@ -22,7 +22,7 @@ const ImageUploader = ({ byteImageAction }) => {
 
     return (
         <div>
-            <input type="file" accept="image/*" onChange={handlerFileChange}></input>
+            <Form.Control type="file" accept="image/*" onChange={handlerFileChange}></Form.Control>
         </div>
     );
 };

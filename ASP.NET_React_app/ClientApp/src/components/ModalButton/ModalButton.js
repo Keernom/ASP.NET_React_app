@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import style from './ModalButton.module.css'
 
 const ModalButton = ({ modalContent, title, btnName }) => {
     const [showModal, setShowModal] = useState(false);
@@ -14,7 +15,7 @@ const ModalButton = ({ modalContent, title, btnName }) => {
 
     return (
         <div>
-            <Button variant="primary" onClick={handleOpenModal}>
+            <Button onClick={handleOpenModal}>
                 {btnName}
             </Button>
 
@@ -22,7 +23,7 @@ const ModalButton = ({ modalContent, title, btnName }) => {
                 <Modal.Header closeButton>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{modalContent}</Modal.Body>
+                <Modal.Body className={style.modalWindow}>{modalContent}</Modal.Body>
                 <Button variant="secondary" onClick={handleCloseModal}>
                     Close
                 </Button>

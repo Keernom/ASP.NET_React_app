@@ -55,6 +55,50 @@ namespace ASP.NET_React_app.Services
             }
         }
 
+        public void RemoveSubcription(int from, int to)
+        {
+            using (var db = new LiteDatabase(DBPath))
+            {
+                var subs = db.GetCollection<UserSubs>(SubsCollection);
+
+                var subsForUser = subs.FindOne(x => x.Id == from);
+
+                if (subsForUser != null)
+                {
+                    if (subsForUser.Users.Select(x => x.Id).Contains(to))
+                    {
+                        var subscription = subsForUser.Users.FirstOrDefault(x => x.Id == to);
+                        subsForUser.Users.Remove(subscription);
+                        
+                        subs.Update(subsForUser);
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+
+        public bool IsSubscribed(int from, int to)
+        {
+            using (var db = new LiteDatabase(DBPath))
+            {
+                var subs = db.GetCollection<UserSubs>(SubsCollection);
+
+                var subsForUser = subs.FindOne(x => x.Id == from);
+
+                if (subsForUser != null)
+                {
+                    return subsForUser.Users.Select(x => x.Id).Contains(to);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         public PostLike GetPostLike(int postId)
         {
             using (var db = new LiteDatabase(DBPath))

@@ -1,13 +1,13 @@
 import React from "react";
 
-const ImageComponent = ({ base64String }) => {
+const ImageComponent = ({ base64String, styles }) => {
     if (base64String === null) {
         return;
     }
 
     const imageUrl = `data:image/jpeg;base64,${base64String}`;
 
-    return <img style={{ width: '100%' }} src={imageUrl} alt="Image" />
+    return <img className={styles} src={imageUrl} alt="Image" />
 }
 
 export default ImageComponent;

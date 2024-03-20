@@ -1,0 +1,17 @@
+.creationBox {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.photoGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.image {
+    width: 50%;
+    margin-bottom: 1em;
+}

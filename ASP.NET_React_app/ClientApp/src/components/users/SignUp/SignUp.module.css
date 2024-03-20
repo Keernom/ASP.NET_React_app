@@ -4,7 +4,7 @@
     padding: 5vh 0;
 }
 
-.loginTile {
+.signupTile {
     background: var(--linearPrimarySecondary);
     width: 25vw;
     align-items: center;

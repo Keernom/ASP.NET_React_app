@@ -1,0 +1,16 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 1.5vh;
+}
+
+.btnExit {
+    margin-left: 1vw;
+}

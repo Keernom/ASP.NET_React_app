@@ -42,3 +42,13 @@ export async function subcribeToUser(userId) {
     const res = await sendRequestWithToken(`${USERS_URL}/subs/${userId}`, 'POST');
     return res;
 }
+
+export async function unsubcribeFromUser(userId) {
+    const res = await sendRequestWithToken(`${USERS_URL}/unsubs/${userId}`, 'POST');
+    return res;
+}
+
+export async function isUserSubscribed(userId) {
+    const res = await sendRequestWithToken(`${USERS_URL}/issubs/${userId}`, 'POST');
+    return res;
+}

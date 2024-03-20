@@ -38,7 +38,7 @@ namespace ASP.NET_React_app.Controllers
                 return NotFound();
             }
 
-            var posts = _postService.GetPostsForCurrentUser(currentUser.Id);
+            var posts = await _postService.GetPostsForCurrentUser(currentUser.Id);
             return Ok(posts);
         }
 

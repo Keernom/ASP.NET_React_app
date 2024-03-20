@@ -1,52 +1,20 @@
 /* Provide sufficient contrast against white background */
 :root {
-  --text: #dfe4f0;
-  --background: #040508;
-  --primary: #a3b1d3;
-  --secondary: #194cdb;
-  --accent: #694BD2;
+  --text: #0b1916;
+  --background: #f3fbf9;
+  --primary: #3dc8a9;
+  --secondary: #93e8d4;
+  --accent: #54e6c4;
 
-  --linearPrimarySecondary: linear-gradient(#a3b1d3, #194cdb);
-  --linearPrimaryAccent: linear-gradient(#a3b1d3, #694BD2);
-  --linearSecondaryAccent: linear-gradient(#194cdb, #694BD2);
-  --radialPrimarySecondary: radial-gradient(#a3b1d3, #194cdb);
-  --radialPrimaryAccent: radial-gradient(#a3b1d3, #694BD2);
-  --radialSecondaryAccent: radial-gradient(#194cdb, #694BD2);
+  --linearPrimarySecondary: linear-gradient(#3dc8a9, #93e8d4);
+  --linearPrimaryAccent: linear-gradient(#3dc8a9, #54e6c4);
+  --linearSecondaryAccent: linear-gradient(#93e8d4, #54e6c4);
+  --radialPrimarySecondary: radial-gradient(#3dc8a9, #93e8d4);
+  --radialPrimaryAccent: radial-gradient(#3dc8a9, #54e6c4);
+  --radialSecondaryAccent: radial-gradient(#93e8d4, #54e6c4);
 }
 
 body {
   background-color: var(--background);
   color: var(--text)
-}
-
-.post-item {
-  background-color: #92b6df;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.post-item .img-box {
-  width: 50%;
-}
-
-.post-item .post-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.user-short {
-  display: flex;
-  margin: 5%;
-  cursor: pointer;
-}
-
-.user-short-img {
-  width: 20%;
-}
-
-.user-short-data {
-  display: flex;
-  justify-content: center;
-  margin-left: 5%;
 }

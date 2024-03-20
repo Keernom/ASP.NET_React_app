@@ -19,9 +19,17 @@ namespace ASP.NET_React_app.Controllers
         }
 
         [HttpGet("all/{name}")]
-        public IActionResult GetUsersByName(string name)
+        public async Task<IActionResult> GetUsersByName(string name)
         {
-            return Ok(_userService.GetUsersByName(name));
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_userService.GetUsersByName(name, currentUser));
         }
 
         [HttpPost("subs/{userId}")]
@@ -35,16 +43,62 @@ namespace ASP.NET_React_app.Controllers
                 return NotFound();
             }
 
-            if (currentUser.Id !=  userId) _userService.Subscribe(currentUser.Id, userId);
+            if (currentUser.Id != userId) _userService.Subscribe(currentUser.Id, userId);
             else return BadRequest();
             
             return Ok();
         }
 
+        [HttpPost("unsubs/{userId}")]
+        public async Task<IActionResult> UnSubcribe(int userId)
+        {
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            if (currentUser.Id != userId) _userService.UnSubscribe(currentUser.Id, userId);
+            else return BadRequest();
+
+            return Ok();
+        }
+
+        [HttpPost("issubs/{userId}")]
+        public async Task<IActionResult> IsSubscribed(int userId)
+        {
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            bool res = false;
+            if (currentUser.Id != userId)
+            {
+                res = _userService.IsSubscribed(currentUser.Id, userId);
+            }
+            else return BadRequest();
+
+            return Ok(res);
+        }
+
         [HttpGet("{userId}")]
         public async Task<IActionResult> Get(int userId)
         {
-            return Ok(await _userService.GetUserProfileById(userId));
+            var currentUserEmail = HttpContext.User.Identity.Name;
+            User currentUser = await _userService.GetUserByLogin(currentUserEmail);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(await _userService.GetUserProfileById(currentUser, userId));
         }
 
         // Эндпоинт для массового создания пользователей

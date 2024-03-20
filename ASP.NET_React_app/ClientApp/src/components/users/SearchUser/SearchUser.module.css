@@ -1,0 +1,48 @@
+.searchDiv {
+    background: var(--linearPrimarySecondary);
+    border-radius: 15px;
+    color: var(--text);
+
+    font-weight: bold;
+    padding: 1em;
+}
+
+.user_short {
+    background: var(--linearPrimaryAccent);
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5%;
+}
+
+.userPhoto {
+    border: 1px solid var(--text);
+    border-radius: 10%;
+    padding: 5px;
+    width: 130px;
+}
+
+.user_short_data {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em 1em;
+}
+
+.user_short_title {
+    font-weight: bold;
+}
+
+.userDiv {
+    display: flex;
+    cursor: pointer;
+}
+
+.subsBtn {
+    height: 3em;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 2em;
+    cursor: pointer;
+}

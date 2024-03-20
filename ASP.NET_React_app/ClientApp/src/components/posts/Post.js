@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import ImageComponent from "../ImageComponent";
 import { PROFILE_URL, USERS_URL, sendRequestWithToken } from "../../services/commonService";
 import { deletePost, getPostsByUserId, updatePost, getPosts } from "../../services/postsService";
-import ModalButton from "../ModalButton";
+import ModalButton from "../ModalButton/ModalButton";
 import PostCreation from "../posts/PostCreation";
+import style from './Posts.module.css';
 
 
 export const Post = ({ id, text, imageStr, date, updateAction }) => {
@@ -19,27 +20,31 @@ export const Post = ({ id, text, imageStr, date, updateAction }) => {
     }
 
     return (
-        <div className="post-item">
-            <div className="post-actions">
+        <div className={style.post}>
+            <PostView date={date} text={text} imageStr={imageStr} />
+            <div className={style.postActions}>
                 <ModalButton
                     modalContent={<PostCreation id={id} oldText={text} oldImage={imageStr} setAction={updatePostView} />}
                     title={"Edit Post"}
                     btnName={"Edit Post"} />
                 <button type="button" className="btn btn-danger" onClick={deletePostView}> Delete Post </button>
             </div>
-            <PostView date={date} text={text} imageStr={imageStr} />
         </div>
     )
 }
 
 const PostView = ({ date, text, imageStr }) => {
+
+    const parsedDate = new Date(date)
+    const viewDate = `${parsedDate.toDateString()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()} `
+
     return (
-        <div className="post-item">
-            <div className="img-box">
-                <ImageComponent base64String={imageStr} />
+        <div className={style.postView}>
+            <p className={style.postDate} >{viewDate}</p>
+            <div className={style.imageBox}>
+                <ImageComponent styles={style.postImage} base64String={imageStr} />
             </div>
-            <div>
-                <p>{date}</p>
+            <div className={style.postText}>
                 <p>{text}</p>
             </div>
         </div>
@@ -61,11 +66,15 @@ export const PostProfileView = ({ userId }) => {
     }, [userId, updateUser])
 
     return (
-        <div className="post-item">
+        <>
             {posts.map((el, key) => {
-                return <Post key={key} id={el.id} text={el.text} imageStr={el.image} date={el.postDate} updateAction={setupdateUser} />
+                return (
+                    <div className={style.post}>
+                        <Post key={key} id={el.id} date={el.postDate} text={el.text} imageStr={el.image} updateAction={setupdateUser} />
+                    </div>
+                )
             })}
-        </div>
+        </>
     )
 }
 
@@ -83,11 +92,15 @@ export const PostsByUser = ({ userId }) => {
     }, [userId])
 
     return (
-        <div>
+        <>
             {posts.map((el, key) => {
-                return <PostView key={key} date={el.postDate} text={el.text} imageStr={el.image} />
+                return (
+                    <div className={style.post}>
+                        <PostView key={key} date={el.postDate} text={el.text} imageStr={el.image} />
+                    </div>
+                )
             })}
-        </div>
+        </>
     )
 }
 
@@ -97,6 +110,7 @@ export const PostsForUser = () => {
 
     const getAllPosts = async () => {
         const allPosts = await getPosts();
+        console.log(allPosts)
         setPosts(allPosts)
     }
 
@@ -105,10 +119,21 @@ export const PostsForUser = () => {
     }, [updateUser])
 
     return (
-        <div>
+        <>
+            <h1>Posts Special For You</h1>
             {posts.map((el, key) => {
-                return <PostView key={key} date={el.postDate} text={el.text} imageStr={el.image} />
+                return (
+                    <>
+                        <div className={style.author}>
+                            <p className={style.authorLabel}>{el.authorName}</p>
+                        </div>
+
+                        <div className={style.post}>
+                            <PostView key={key} date={el.postDate} text={el.text} imageStr={el.image} />
+                        </div>
+                    </>
+                )
             })}
-        </div>
+        </>
     )
 }

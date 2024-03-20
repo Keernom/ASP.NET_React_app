@@ -1,9 +1,9 @@
-import { Home } from "./components/Home";
+import Home from "./components/Home/Home";
 import { PostsForUser } from "./components/posts/Post";
 import Login from "./components/users/Login/Login";
-import SearchUser from "./components/users/SearchUser";
-import SignUp from "./components/users/SignUp";
-import UserProfile from "./components/users/UserProfile";
+import SearchUser from "./components/users/SearchUser/SearchUser";
+import SignUp from "./components/users/SignUp/SignUp";
+import UserProfile from "./components/users/UserProfile/UserProfile";
 import UserPublicView from "./components/users/UserPublicView";
 import { LOGIN_URL, PROFILE_URL, SIGNUP_URL, SEARCH_URL, ALLPOSTS_URL } from "./services/commonService";
 

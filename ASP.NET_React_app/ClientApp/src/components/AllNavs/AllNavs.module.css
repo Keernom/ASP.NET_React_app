@@ -5,10 +5,6 @@
 }
 
 .navLink:hover {
-    background-color: var(--text);
-    color: var(--background);
-}
-
-.navLink:focus {
+    background: var(--linearPrimarySecondary);
     color: var(--text);
 }

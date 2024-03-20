@@ -16,8 +16,8 @@ export async function getToken(login, password) {
     const url = ACCOUNT_URL + '/token';
     const token = await sendAuthentitacedRequest(url, 'POST', login, password);
 
-    localStorage.setItem(TOKEN_NAME, token.accessToken);
-    localStorage.setItem(ISONLINE_NAME, '1');
+    sessionStorage.setItem(TOKEN_NAME, token.accessToken);
+    sessionStorage.setItem(ISONLINE_NAME, '1');
     window.location.href = PROFILE_URL;
 }
 
@@ -49,7 +49,7 @@ export async function sendRequestWithToken(url, method, data, withToken = true) 
     var headers = new Headers();
 
     if (withToken) {
-        const token = localStorage.getItem(TOKEN_NAME);
+        const token = sessionStorage.getItem(TOKEN_NAME);
         headers.set('Authorization', `Bearer ${token}`);
     }
 
@@ -86,9 +86,9 @@ function errorRequest(status) {
 }
 
 export function clearStorage() {
-    localStorage.clear();
+    sessionStorage.clear();
 }
 
 export function isUserOnline() {
-    return localStorage.getItem(ISONLINE_NAME) == '1'
+    return sessionStorage.getItem(ISONLINE_NAME) == '1'
 }

@@ -9,6 +9,9 @@
         public int? LikesCount { get; set; }
         public DateTime? PostDate { get; set; }
 
+        public int UserId { get; set; }
+        public string AuthorName { get; set; }
+
         public PostView()
         {
             

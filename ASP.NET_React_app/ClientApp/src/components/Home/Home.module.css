@@ -1,0 +1,75 @@
+.titleDiv {
+    display: flex;
+    justify-content: center;
+    padding: 5vh 0;
+}
+
+.cardsDiv {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 60vw;
+}
+
+.cardDiv {
+    background-color: rgb(94, 94, 94);
+    width: 18rem;
+
+    border-radius: 15px;
+    color: var(--text);
+    box-shadow: 5px 5px 10px black;
+}
+
+.cardImage {
+    border-radius: 15px 15px 0px 0px;
+}
+
+.reactCard {
+    background-color: rgba(0, 64, 255, 0.614);
+    width: 18rem;
+
+    border-radius: 15px;
+    color: white;
+    box-shadow: 5px 5px 10px black;
+    margin: 0.6em;
+}
+
+.aspnetCard {
+    background-color: rgb(34 52 99);
+    width: 18rem;
+
+    border-radius: 15px;
+    color: white;
+    box-shadow: 5px 5px 10px black;
+    margin: 0.6em;
+}
+
+.efcoreCard {
+    background-color: rgb(132 6 168);
+    width: 18rem;
+
+    border-radius: 15px;
+    color: white;
+    box-shadow: 5px 5px 10px black;
+    margin: 0.6em;
+}
+
+.jwtCard {
+    background-color: black;
+    width: 18rem;
+
+    border-radius: 15px;
+    color: white;
+    box-shadow: 5px 5px 10px black;
+    margin: 0.6em;
+}
+
+.postgresCard {
+    background-color: rgb(94, 94, 94);
+    width: 18rem;
+
+    border-radius: 15px;
+    color: white;
+    box-shadow: 5px 5px 10px black;
+    margin: 0.6em;
+}

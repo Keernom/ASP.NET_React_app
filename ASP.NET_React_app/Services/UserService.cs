@@ -65,7 +65,11 @@ namespace ASP.NET_React_app.Services
             userToUpdate.Email = user.Email;
             userToUpdate.Password = user.Password;
             userToUpdate.Description = user.Description;
-            userToUpdate.Photo = ImageService.GetPhoto(user.Photo);
+
+            if (!string.IsNullOrEmpty(user.Photo))
+            {
+                userToUpdate.Photo = ImageService.GetPhoto(user.Photo);
+            }
 
             _dbContext.Users.Update(userToUpdate);
             await _dbContext.SaveChangesAsync();
@@ -78,7 +82,7 @@ namespace ASP.NET_React_app.Services
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<UserProfile?> GetUserProfileById(int id)
+        public async Task<UserProfile?> GetUserProfileById(User currentuser, int id)
         {
             User? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 
@@ -87,16 +91,26 @@ namespace ASP.NET_React_app.Services
                 return null;
             }
 
-            return ToProfile(user);
+
+            UserProfile userProfile = ToProfile(user);
+            userProfile.IsInSubs = _noSQLDataService.IsSubscribed(currentuser.Id, id);
+            return userProfile;
         }
 
-        public List<UserShort> GetUsersByName(string name)
+        public List<UserShort> GetUsersByName(string name, User currentUser)
         {
             string lowerName = name.ToLower();
-            return _dbContext.Users
-                .Where(x => x.Name.ToLower().StartsWith(lowerName))
+            List<UserShort> users = _dbContext.Users
+                .Where(x => x.Name.ToLower().StartsWith(lowerName) && x.Id != currentUser.Id)
                 .Select(ToShortModel)
                 .ToList();
+
+            foreach(var user in users)
+            {
+                user.isInSubs = _noSQLDataService.IsSubscribed(currentUser.Id, user.Id);
+            }
+
+            return users;
         }
 
         public async Task DeleteAsync(User user)
@@ -115,6 +129,16 @@ namespace ASP.NET_React_app.Services
             }
 
             _noSQLDataService.SetUserSubs(from, to);
+        }
+
+        public void UnSubscribe(int from, int to)
+        {
+            _noSQLDataService.RemoveSubcription(from, to);
+        }
+
+        public bool IsSubscribed(int from, int to)
+        {
+            return _noSQLDataService.IsSubscribed(from, to);
         }
 
         public (string login, string password) GetUserLoginPassFromBasicAuth(HttpRequest request)
@@ -173,13 +197,12 @@ namespace ASP.NET_React_app.Services
                 Email = user.Email,
                 Description = user.Description,
                 Photo = user.Photo,
-                SubsCount = userSubs?.Users.Count ?? 0,
+                SubsCount = userSubs?.Users.Count ?? 0
             };
         }
 
         private UserShort ToShortModel(User user)
         {
-            var userSubs = _noSQLDataService.GetUserSubs(user.Id);
             return new UserShort()
             {
                 Id = user.Id,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import UserView from "./UserView";
+import UserView from "./UserView/UserView";
 import { useParams } from "react-router-dom";
-import { getPublicUser, subcribeToUser } from "../../services/usersService";
+import { getPublicUser, isUserSubscribed, subcribeToUser } from "../../services/usersService";
 
 const UserPublicView = () => {
     const [user, setUser] = useState({
@@ -10,7 +10,8 @@ const UserPublicView = () => {
         password: '',
         email: '',
         description: '',
-        photo: ''
+        photo: '',
+        isInSubs: ''
     });
 
     const params = useParams();
