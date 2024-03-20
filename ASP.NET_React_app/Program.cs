@@ -1,6 +1,7 @@
 using ASP.NET_React_app.Data;
 using ASP.NET_React_app.Models;
 using ASP.NET_React_app.Services;
+using LiteDB;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -28,7 +29,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-string conn = builder.Configuration.GetConnectionString("TestDb");
+//string conn = builder.Configuration.GetConnectionString("TestDb");
+string conn = "host=80.87.195.227;port=38072;Database=AspNet_React;Username=postgres;Password=admin;";
+Console.WriteLine($"CS - {conn}");
+
 builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(conn));
 
 builder.Services.AddTransient<UserService>();

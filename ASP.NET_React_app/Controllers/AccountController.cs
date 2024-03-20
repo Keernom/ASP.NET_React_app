@@ -89,7 +89,7 @@ namespace ASP.NET_React_app.Controllers
                 audience: AuthOptions.AUDIENCE,
                 notBefore: now,
                 claims: identity?.claims.Claims,
-                expires: now.AddMinutes(AuthOptions.LIFETIME),
+                expires: now.AddDays(AuthOptions.LIFETIME),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
         
             string encodedJWT = new JwtSecurityTokenHandler().WriteToken(jwt);
