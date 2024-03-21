@@ -6,12 +6,10 @@
 
 .loginTile {
     background: var(--linearPrimarySecondary);
-    width: 25vw;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-
     border-radius: 15px;
-    color: var(--text);
-    box-shadow: 5px 5px 10px black;
+    align-items: center;
+    box-shadow: 5px 5px 10px #6aa598;
+    margin: 0 auto 1em auto;
+    width: 25vw;
+    min-width: 300px;
 }

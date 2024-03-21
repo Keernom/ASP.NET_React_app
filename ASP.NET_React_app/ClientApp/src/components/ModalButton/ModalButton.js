@@ -19,7 +19,7 @@ const ModalButton = ({ modalContent, title, btnName }) => {
                 {btnName}
             </Button>
 
-            <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal show={showModal} onHide={handleCloseModal} className={style.modalStyle}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>

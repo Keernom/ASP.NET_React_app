@@ -1,3 +1,7 @@
 .modalWindow {
     background: var(--linearPrimarySecondary);
 }
+
+.modalStyle {
+    min-width: 300px;
+}
