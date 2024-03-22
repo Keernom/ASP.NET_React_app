@@ -32,3 +32,9 @@
 .subsBtn {
     margin: 2em 0;
 }
+
+@media screen and (max-width: 430px) {
+    .userPhoto {
+        max-width: 100px;
+    }
+}

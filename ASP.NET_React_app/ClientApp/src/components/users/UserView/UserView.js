@@ -17,7 +17,7 @@ const UserView = ({ user, isProfile }) => {
     }
 
     return (
-        <div>
+        <>
 
             <div className={style.userPanel}>
 
@@ -41,7 +41,7 @@ const UserView = ({ user, isProfile }) => {
             <div>
                 {isProfile ? <PostProfileView userId={user.id} /> : <PostsByUser userId={user.id} />}
             </div>
-        </div >
+        </ >
     )
 }
 
