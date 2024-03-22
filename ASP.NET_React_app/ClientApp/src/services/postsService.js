@@ -13,7 +13,9 @@ export async function getPosts() {
 }
 
 export async function createPost(post) {
-    post.image = post.image.toString();
+    if (post.image) {
+        post.image = post.image.toString();
+    }
     const res = await sendRequestWithToken(POSTS_URL, 'POST', post)
     return res;
 }
